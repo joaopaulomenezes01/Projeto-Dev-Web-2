@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.db.models import Q
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from .forms import ClienteForm, MecanicoForm, OrdemForm, VeiculoForm
@@ -78,7 +79,27 @@ class MecanicoExcluir(ExcluirMixin, DeleteView):
 
 class OrdemLista(ListView):
     model = OrdemServico
-    queryset = OrdemServico.objects.select_related("veiculo__cliente", "mecanico")
+
+    def get_queryset(self):
+        qs = OrdemServico.objects.select_related("veiculo__cliente", "mecanico")
+        q = self.request.GET.get("q", "").strip()
+        status = self.request.GET.get("status", "")
+        if q:
+            qs = qs.filter(
+                Q(descricao__icontains=q)
+                | Q(veiculo__placa__icontains=q)
+                | Q(veiculo__cliente__nome__icontains=q)
+            )
+        if status:
+            qs = qs.filter(status=status)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        contexto = super().get_context_data(**kwargs)
+        contexto["status_choices"] = OrdemServico.Status.choices
+        contexto["q"] = self.request.GET.get("q", "")
+        contexto["status_atual"] = self.request.GET.get("status", "")
+        return contexto
 
 
 class OrdemCriar(SalvarMixin, CreateView):
