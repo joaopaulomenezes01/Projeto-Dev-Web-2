@@ -18,3 +18,4 @@ urlpatterns = [
 ]
 urlpatterns += crud("clientes", "cliente", v.ClienteLista, v.ClienteCriar, v.ClienteEditar, v.ClienteExcluir)
 urlpatterns += crud("veiculos", "veiculo", v.VeiculoLista, v.VeiculoCriar, v.VeiculoEditar, v.VeiculoExcluir)
+urlpatterns += crud("mecanicos", "mecanico", v.MecanicoLista, v.MecanicoCriar, v.MecanicoEditar, v.MecanicoExcluir)
