@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Cliente
+from .models import Cliente, Veiculo
 
 
 class BootstrapForm(forms.ModelForm):
@@ -16,3 +16,8 @@ class ClienteForm(BootstrapForm):
     class Meta:
         model = Cliente
         fields = ["nome", "telefone", "email"]
+
+class VeiculoForm(BootstrapForm):
+    class Meta:
+        model = Veiculo
+        fields = ["cliente", "placa", "marca", "modelo", "ano"]
