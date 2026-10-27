@@ -1,0 +1,16 @@
+{% extends 'oficina/base.html' %}
+{% block conteudo %}
+<h2 class="mb-3">{{ titulo }}</h2>
+<form method="post" class="form-card">
+  {% csrf_token %}
+  {% for campo in form %}
+    <div class="mb-3">
+      <label class="form-label" for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+      {{ campo }}
+      {% for erro in campo.errors %}<div class="text-danger small">{{ erro }}</div>{% endfor %}
+    </div>
+  {% endfor %}
+  <button class="btn btn-primary">Salvar</button>
+  <a class="btn btn-secondary" href="javascript:history.back()">Cancelar</a>
+</form>
+{% endblock %}
