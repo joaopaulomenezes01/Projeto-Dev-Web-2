@@ -25,4 +25,14 @@ class Veiculo(models.Model):
 
     def __str__(self):
         return f"{self.modelo} ({self.placa})"
-      
+
+class Mecanico(models.Model):
+    nome = models.CharField(max_length=120)
+    telefone = models.CharField(max_length=20, blank=True)
+
+    class Meta:
+        ordering = ["nome"]
+        verbose_name = "mecânico"
+
+    def __str__(self):
+        return self.nome
