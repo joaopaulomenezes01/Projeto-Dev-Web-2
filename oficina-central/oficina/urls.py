@@ -16,4 +16,5 @@ def crud(prefixo, nome, lista, criar, editar, excluir):
 urlpatterns = [
     path("", RedirectView.as_view(pattern_name="cliente_lista"), name="home"),
 ]
+urlpatterns += crud("clientes", "cliente", v.ClienteLista, v.ClienteCriar, v.ClienteEditar, v.ClienteExcluir)
 urlpatterns += crud("veiculos", "veiculo", v.VeiculoLista, v.VeiculoCriar, v.VeiculoEditar, v.VeiculoExcluir)
