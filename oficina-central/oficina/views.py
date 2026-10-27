@@ -1,8 +1,8 @@
 from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
-from .forms import ClienteForm, MecanicoForm, VeiculoForm
-from .models import Cliente, Mecanico, Veiculo
+from .forms import ClienteForm, MecanicoForm, OrdemForm, VeiculoForm
+from .models import Cliente, Mecanico, OrdemServico, Veiculo
 
 
 class VoltaParaLista:
@@ -75,3 +75,21 @@ class MecanicoEditar(SalvarMixin, UpdateView):
 
 class MecanicoExcluir(ExcluirMixin, DeleteView):
     model = Mecanico
+
+class OrdemLista(ListView):
+    model = OrdemServico
+    queryset = OrdemServico.objects.select_related("veiculo__cliente", "mecanico")
+
+
+class OrdemCriar(SalvarMixin, CreateView):
+    model = OrdemServico
+    form_class = OrdemForm
+
+
+class OrdemEditar(SalvarMixin, UpdateView):
+    model = OrdemServico
+    form_class = OrdemForm
+
+
+class OrdemExcluir(ExcluirMixin, DeleteView):
+    model = OrdemServico
