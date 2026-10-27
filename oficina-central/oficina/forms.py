@@ -1,5 +1,5 @@
 from django import forms
-from .models import Cliente, Mecanico, Veiculo
+from .models import Cliente, Mecanico, OrdemServico, Veiculo
 
 
 class BootstrapForm(forms.ModelForm):
@@ -25,3 +25,9 @@ class MecanicoForm(BootstrapForm):
     class Meta:
         model = Mecanico
         fields = ["nome", "telefone"]
+        
+class OrdemForm(BootstrapForm):
+    class Meta:
+        model = OrdemServico
+        fields = ["veiculo", "mecanico", "descricao", "status", "valor_estimado"]
+        widgets = {"descricao": forms.Textarea(attrs={"rows": 4})}
