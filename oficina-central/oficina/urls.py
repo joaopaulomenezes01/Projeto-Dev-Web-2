@@ -23,3 +23,6 @@ urlpatterns += crud("ordens", "ordemservico", v.OrdemLista, v.OrdemCriar, v.Orde
 urlpatterns += [
     path("ordens/<int:pk>/", v.OrdemDetalhe.as_view(), name="ordemservico_detalhe"),
 ]
+urlpatterns += [
+    path("notificacoes/", v.NotificacaoLista.as_view(), name="notificacao_lista"),
+]
