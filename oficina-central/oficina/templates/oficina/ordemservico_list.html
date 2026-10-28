@@ -34,7 +34,7 @@
       <td>{{ o.veiculo }}</td>
       <td>{{ o.veiculo.cliente }}</td>
       <td>{{ o.mecanico }}</td>
-      <td><span class="badge text-bg-secondary">{{ o.get_status_display }}</span></td>
+      <td><span class="badge status-{{ o.status }}">{{ o.get_status_display }}</span></td>
       <td>R$ {{ o.valor_estimado }}</td>
       <td>{{ o.data_abertura|date:"d/m/Y" }}</td>
       <td class="text-end text-nowrap">
