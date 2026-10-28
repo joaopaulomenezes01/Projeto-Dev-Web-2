@@ -30,7 +30,7 @@
   <tbody>
   {% for o in object_list %}
     <tr>
-      <td>#{{ o.pk|stringformat:"04d" }}</td>
+      <td><a href="{% url 'ordemservico_detalhe' o.pk %}">#{{ o.pk|stringformat:"04d" }}</a></td>
       <td>{{ o.veiculo }}</td>
       <td>{{ o.veiculo.cliente }}</td>
       <td>{{ o.mecanico }}</td>
