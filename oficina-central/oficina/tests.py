@@ -50,6 +50,7 @@ class FluxoOficinaTests(TestCase):
             )
         self.assertRedirects(r, reverse("ordemservico_lista"))
         self.assertEqual(OrdemServico.objects.count(), 1)
+
     def test_ordem_criada_publica_evento_e_gera_historico(self):
         with mock.patch("oficina.signals.publicar_evento") as publicar:
             with self.captureOnCommitCallbacks(execute=True):
@@ -84,3 +85,29 @@ class FluxoOficinaTests(TestCase):
         with mock.patch("oficina.signals.publicar_evento"):
             ordem.save()
         self.assertIsNotNone(ordem.data_conclusao)
+    
+    def test_busca_e_filtro_por_status(self):
+        self.nova_ordem(descricao="Troca de óleo")
+        self.nova_ordem(descricao="Alinhamento", status=OrdemServico.Status.PRONTO)
+        url = reverse("ordemservico_lista")
+
+        todos = self.client.get(url).context["object_list"]
+        self.assertEqual(len(todos), 2)
+
+        por_status = self.client.get(url, {"status": "pronto"}).context["object_list"]
+        self.assertEqual([o.descricao for o in por_status], ["Alinhamento"])
+
+        por_busca = self.client.get(url, {"q": "abc1d23"}).context["object_list"]
+        self.assertEqual(len(por_busca), 2)
+
+        por_cliente = self.client.get(url, {"q": "maria"}).context["object_list"]
+        self.assertEqual(len(por_cliente), 2)
+
+        vazio = self.client.get(url, {"q": "inexistente"}).context["object_list"]
+        self.assertEqual(len(vazio), 0)
+
+    def test_detalhe_da_ordem_mostra_historico(self):
+        ordem = self.nova_ordem()
+        r = self.client.get(reverse("ordemservico_detalhe", args=[ordem.pk]))
+        self.assertContains(r, "Histórico")
+        self.assertContains(r, "Aberta")
