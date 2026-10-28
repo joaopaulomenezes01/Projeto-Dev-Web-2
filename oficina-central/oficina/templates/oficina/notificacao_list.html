@@ -1,0 +1,21 @@
+{% extends 'oficina/base.html' %}
+{% block conteudo %}
+<h2 class="mb-3">Notificações</h2>
+
+<table class="table table-striped align-middle">
+  <thead>
+    <tr><th>Quando</th><th>Ordem</th><th>Mensagem</th></tr>
+  </thead>
+  <tbody>
+  {% for n in object_list %}
+    <tr>
+      <td>{{ n.criada_em|date:"d/m/Y H:i" }}</td>
+      <td><a href="{% url 'ordemservico_detalhe' n.ordem.pk %}">#{{ n.ordem.pk|stringformat:"04d" }}</a></td>
+      <td>{{ n.mensagem }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="3">Nenhuma notificação ainda.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
