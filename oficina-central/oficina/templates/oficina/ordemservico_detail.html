@@ -15,7 +15,7 @@
         <p class="mb-1"><strong>Cliente:</strong> {{ object.veiculo.cliente }}</p>
         <p class="mb-1"><strong>Veículo:</strong> {{ object.veiculo }}</p>
         <p class="mb-1"><strong>Mecânico:</strong> {{ object.mecanico }}</p>
-        <p class="mb-1"><strong>Status:</strong> <span class="badge text-bg-secondary">{{ object.get_status_display }}</span></p>
+        <p class="mb-1"><strong>Status:</strong><span class="badge status-{{ object.status }}">{{ object.get_status_display }}</span></p>
         <p class="mb-1"><strong>Valor estimado:</strong> R$ {{ object.valor_estimado }}</p>
         <p class="mb-1"><strong>Abertura:</strong> {{ object.data_abertura|date:"d/m/Y H:i" }}</p>
         {% if object.data_conclusao %}
@@ -32,7 +32,7 @@
       <ul class="list-group list-group-flush">
         {% for h in object.historico.all %}
           <li class="list-group-item d-flex justify-content-between">
-            <span>{{ h.get_status_display }}</span>
+            <span class="badge status-{{ o.status }}">{{ o.get_status_display }}</span>
             <span class="text-muted">{{ h.data|date:"d/m/Y H:i" }}</span>
           </li>
         {% empty %}
