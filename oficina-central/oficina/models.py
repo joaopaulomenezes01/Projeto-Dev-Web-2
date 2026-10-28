@@ -65,3 +65,15 @@ class OrdemServico(models.Model):
         if self.status == self.Status.CONCLUIDA and not self.data_conclusao:
             self.data_conclusao = timezone.now()
         super().save(*args, **kwargs)
+class HistoricoOrdem(models.Model):
+    ordem = models.ForeignKey(OrdemServico, on_delete=models.CASCADE, related_name="historico")
+    status = models.CharField(max_length=20, choices=OrdemServico.Status.choices)
+    data = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["data", "id"]
+        verbose_name = "histórico da ordem"
+        verbose_name_plural = "históricos das ordens"
+
+    def __str__(self):
+        return f"{self.ordem} - {self.get_status_display()}"        
