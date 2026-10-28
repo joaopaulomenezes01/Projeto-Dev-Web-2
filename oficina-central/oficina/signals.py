@@ -1,6 +1,8 @@
+from django.db import transaction
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
+from .mensageria import publicar_evento
 from .models import HistoricoOrdem, OrdemServico
 
 
@@ -18,3 +20,4 @@ def guardar_status_anterior(sender, instance, **kwargs):
 def registrar_historico(sender, instance, created, **kwargs):
     if created or instance._status_anterior != instance.status:
         HistoricoOrdem.objects.create(ordem=instance, status=instance.status)
+        transaction.on_commit(lambda: publicar_evento(instance))
