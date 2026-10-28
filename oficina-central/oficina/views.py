@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView, DetailView
 
 from .forms import ClienteForm, MecanicoForm, OrdemForm, VeiculoForm
-from .models import Cliente, Mecanico, OrdemServico, Veiculo
+from .models import Cliente, Mecanico, Notificacao, OrdemServico, Veiculo
 
 
 class VoltaParaLista:
@@ -118,3 +118,7 @@ class OrdemExcluir(ExcluirMixin, DeleteView):
 class OrdemDetalhe(DetailView):
     model = OrdemServico
     queryset = OrdemServico.objects.select_related("veiculo__cliente", "mecanico")
+
+class NotificacaoLista(ListView):
+    model = Notificacao
+    queryset = Notificacao.objects.select_related("ordem")
