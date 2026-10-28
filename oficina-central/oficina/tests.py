@@ -50,3 +50,37 @@ class FluxoOficinaTests(TestCase):
             )
         self.assertRedirects(r, reverse("ordemservico_lista"))
         self.assertEqual(OrdemServico.objects.count(), 1)
+    def test_ordem_criada_publica_evento_e_gera_historico(self):
+        with mock.patch("oficina.signals.publicar_evento") as publicar:
+            with self.captureOnCommitCallbacks(execute=True):
+                ordem = OrdemServico.objects.create(
+                    veiculo=self.veiculo, mecanico=self.mecanico, descricao="Revisão"
+                )
+        publicar.assert_called_once_with(ordem)
+        self.assertEqual(HistoricoOrdem.objects.filter(ordem=ordem).count(), 1)
+
+    def test_mudar_status_publica_novo_evento(self):
+        ordem = self.nova_ordem()
+        with mock.patch("oficina.signals.publicar_evento") as publicar:
+            with self.captureOnCommitCallbacks(execute=True):
+                ordem.status = OrdemServico.Status.PRONTO
+                ordem.save()
+        publicar.assert_called_once()
+        self.assertEqual(ordem.historico.count(), 2)
+
+    def test_salvar_sem_mudar_status_nao_publica(self):
+        ordem = self.nova_ordem()
+        with mock.patch("oficina.signals.publicar_evento") as publicar:
+            with self.captureOnCommitCallbacks(execute=True):
+                ordem.descricao = "Outra descrição"
+                ordem.save()
+        publicar.assert_not_called()
+        self.assertEqual(ordem.historico.count(), 1)
+
+    def test_concluir_preenche_data_de_conclusao(self):
+        ordem = self.nova_ordem()
+        self.assertIsNone(ordem.data_conclusao)
+        ordem.status = OrdemServico.Status.CONCLUIDA
+        with mock.patch("oficina.signals.publicar_evento"):
+            ordem.save()
+        self.assertIsNotNone(ordem.data_conclusao)
