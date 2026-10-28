@@ -77,3 +77,15 @@ class HistoricoOrdem(models.Model):
 
     def __str__(self):
         return f"{self.ordem} - {self.get_status_display()}"        
+class Notificacao(models.Model):
+    ordem = models.ForeignKey(OrdemServico, on_delete=models.CASCADE, related_name="notificacoes")
+    mensagem = models.CharField(max_length=255)
+    criada_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-criada_em", "-id"]
+        verbose_name = "notificação"
+        verbose_name_plural = "notificações"
+
+    def __str__(self):
+        return self.mensagem
