@@ -1,6 +1,6 @@
 from django.urls import reverse
 from django.db.models import Q
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView, DetailView
 
 from .forms import ClienteForm, MecanicoForm, OrdemForm, VeiculoForm
 from .models import Cliente, Mecanico, OrdemServico, Veiculo
@@ -114,3 +114,7 @@ class OrdemEditar(SalvarMixin, UpdateView):
 
 class OrdemExcluir(ExcluirMixin, DeleteView):
     model = OrdemServico
+
+class OrdemDetalhe(DetailView):
+    model = OrdemServico
+    queryset = OrdemServico.objects.select_related("veiculo__cliente", "mecanico")
