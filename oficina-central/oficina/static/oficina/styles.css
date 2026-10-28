@@ -1,0 +1,23 @@
+body {
+  background: #f5f6f8;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.table {
+  background: #fff;
+}
+
+.badge[class*="status-"] {
+  font-weight: 500;
+  padding: 0.45em 0.7em;
+}
+
+.status-aberta { background: #0d6efd; color: #fff; }
+.status-em_andamento { background: #fd7e14; color: #fff; }
+.status-aguardando_peca { background: #ffc107; color: #212529; }
+.status-pronto { background: #20c997; color: #212529; }
+.status-concluida { background: #198754; color: #fff; }
