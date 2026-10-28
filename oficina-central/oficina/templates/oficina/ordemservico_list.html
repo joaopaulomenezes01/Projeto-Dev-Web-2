@@ -5,6 +5,24 @@
   <a class="btn btn-primary" href="{% url 'ordemservico_criar' %}">Nova ordem</a>
 </div>
 
+<form method="get" class="row g-2 mb-3">
+  <div class="col-md-6">
+    <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Buscar por placa, cliente ou descrição">
+  </div>
+  <div class="col-md-4">
+    <select name="status" class="form-select">
+      <option value="">Todos os status</option>
+      {% for valor, nome in status_choices %}
+        <option value="{{ valor }}" {% if valor == status_atual %}selected{% endif %}>{{ nome }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-2 d-grid d-md-flex gap-2">
+    <button class="btn btn-outline-primary" type="submit">Filtrar</button>
+    <a class="btn btn-outline-secondary" href="{% url 'ordemservico_lista' %}">Limpar</a>
+  </div>
+</form>
+
 <table class="table table-striped align-middle">
   <thead>
     <tr><th>Nº</th><th>Veículo</th><th>Cliente</th><th>Mecânico</th><th>Status</th><th>Valor</th><th>Abertura</th><th></th></tr>
