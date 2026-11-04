@@ -68,7 +68,7 @@ Precisa de Python 3.11+, Git e Docker Desktop aberto.
    Espere uns 20 segundos até o MySQL ficar pronto (`docker compose ps` mostra `healthy`).
    O painel do RabbitMQ fica em http://localhost:15672 (usuário e senha `guest`).
 
-   O MySQL do Docker usa a porta **3307** no seu computador, pra não conflitar com um MySQL já instalado na 3306.
+   O MySQL do Docker usa a porta **3307** no meu computador, pra não conflitar com um MySQL já instalado na 3306.
 
 4. Criar as tabelas e iniciar o sistema:
 
